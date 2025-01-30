@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- Filters Sidebar -->
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5>Filters</h5>
+            </div>
+            <div class="card-body">
+                <!-- Category Filter -->
+                <div class="mb-3">
+                    <h6>Category</h6>
+                    <div class="form-check">
+                        <input class="form-check-input category-filter" type="checkbox" value="skincare">
+                        <label class="form-check-label">Skincare</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input category-filter" type="checkbox" value="makeup">
+                        <label class="form-check-label">Makeup</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input category-filter" type="checkbox" value="haircare">
+                        <label class="form-check-label">Haircare</label>
+                    </div>
+                </div>
+
+                <!-- Price Range Filter -->
+                <div class="mb-3">
+                    <h6>Price Range</h6>
+                    <div class="price-slider">
+                        <input type="range" class="form-range" id="minPrice" min="0" max="200">
+                        <input type="range" class="form-range" id="maxPrice" min="0" max="200">
+                        <div class="price-range-display">
+                            $<span id="minPriceValue">0</span> - $<span id="maxPriceValue">200</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rating Filter -->
+                <div class="mb-3">
+                    <h6>Minimum Rating</h6>
+                    <select class="form-select" id="ratingFilter">
+                        <option value="">All Ratings</option>
+                        <option value="4">4+ Stars</option>
+                        <option value="3">3+ Stars</option>
+                        <option value="2">2+ Stars</option>
+                    </select>
+                </div>
+
+                <!-- Discount Filter -->
+                <div class="mb-3">
+                    <h6>Discount</h6>
+                    <select class="form-select" id="discountFilter">
+                        <option value="">All Items</option>
+                        <option value="10">10% or more</option>
+                        <option value="20">20% or more</option>
+                        <option value="30">30% or more</option>
+                        <option value="50">50% or more</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary w-100" id="applyFilters">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="col-md-9">
+        <div class="row" id="productsContainer">
+            <!-- Products will be dynamically loaded here -->
+        </div>
+    </div>
+</div>
+{% endblock %}
