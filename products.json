@@ -1,34 +1,64 @@
 {
     "products": [
         {
-            "id": 1,
-            "name": "Hydrating Face Cream",
-            "description": "24-hour hydration for all skin types",
-            "price": 29.99,
-            "category": "skincare",
-            "rating": 4.5,
-            "discount": 10,
-            "image_url": "https://via.placeholder.com/200x200"
-        },
-        {
-            "id": 2,
-            "name": "Matte Lipstick",
-            "description": "Long-lasting matte finish",
-            "price": 19.99,
-            "category": "makeup",
-            "rating": 4.8,
-            "discount": 0,
-            "image_url": "https://via.placeholder.com/200x200"
-        },
-        {
-            "id": 3,
-            "name": "Repair Shampoo",
-            "description": "Deep repair for damaged hair",
+            "id": "1",
+            "name": "Facial Cleanser",
+            "category": "Skincare",
+            "description": "Gentle, non-drying facial cleanser for all skin types",
             "price": 24.99,
-            "category": "haircare",
-            "rating": 4.2,
+            "rating": 4.5,
+            "discount": 0,
+            "image_url": "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        },
+        {
+            "id": "2",
+            "name": "Moisturizer",
+            "category": "Skincare",
+            "description": "Hydrating facial moisturizer with natural ingredients",
+            "price": 29.99,
+            "rating": 4.8,
             "discount": 15,
-            "image_url": "https://via.placeholder.com/200x200"
+            "image_url": "https://images.unsplash.com/photo-1580870069867-74c57ee1bb07?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        },
+        {
+            "id": "3",
+            "name": "Shampoo",
+            "category": "Haircare",
+            "description": "Nourishing shampoo for all hair types",
+            "price": 19.99,
+            "rating": 4.2,
+            "discount": 0,
+            "image_url": "https://images.unsplash.com/photo-1585232351009-aa87416fca90?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        },
+        {
+            "id": "4",
+            "name": "Hair Conditioner",
+            "category": "Haircare",
+            "description": "Deep conditioning treatment for smooth, silky hair",
+            "price": 21.99,
+            "rating": 4.6,
+            "discount": 10,
+            "image_url": "https://images.unsplash.com/photo-1526947425960-945c6e72858f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        },
+        {
+            "id": "5",
+            "name": "Face Mask",
+            "category": "Skincare",
+            "description": "Purifying clay mask for deep cleansing",
+            "price": 34.99,
+            "rating": 4.7,
+            "discount": 20,
+            "image_url": "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        },
+        {
+            "id": "6",
+            "name": "Hair Oil",
+            "category": "Haircare",
+            "description": "Nourishing oil for healthy, shiny hair",
+            "price": 27.99,
+            "rating": 4.4,
+            "discount": 0,
+            "image_url": "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
         }
     ]
 }

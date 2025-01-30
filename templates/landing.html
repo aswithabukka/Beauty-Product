@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeautyShop - Your Natural Beauty Destination</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c2c2c;
+            --secondary-color: #4a4a4a;
+            --accent-color: #8a8a8a;
+            --background-color: #ffffff;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: transparent;
+            position: absolute;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color) !important;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(45deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8)), url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-content {
+            padding: 2rem;
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            background: linear-gradient(45deg, #2c2c2c, #4a4a4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .cta-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-text {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .benefits-section {
+            padding: 6rem 0;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+        }
+
+        .benefit-card {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .floating-images {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 2rem;
+        }
+
+        .floating-image {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .floating-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .floating-image:nth-child(odd) {
+            transform: translateY(-20px);
+        }
+
+        .floating-image:nth-child(even) {
+            transform: translateY(20px);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-images {
+                display: none;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">BeautyShop</a>
+            <div class="d-flex gap-3">
+                <a href="/concerns" class="btn btn-outline-dark">Find Your Solution</a>
+                <a href="/products" class="btn btn-dark">Shop Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Discover Your Natural Beauty</h1>
+                <p class="hero-subtitle">
+                    Transform your beauty routine with our curated collection of premium skincare and haircare products. 
+                    Let us help you achieve your beauty goals naturally.
+                </p>
+                <div class="cta-buttons">
+                    <a href="/concerns" class="cta-button cta-primary">Find Your Solution</a>
+                    <a href="/products" class="cta-button cta-secondary">Shop Products</a>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-leaf feature-icon"></i>
+                        <h3 class="feature-title">Natural Ingredients</h3>
+                        <p class="feature-text">Carefully selected natural ingredients for gentle yet effective results</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-heart feature-icon"></i>
+                        <h3 class="feature-title">Cruelty Free</h3>
+                        <p class="feature-text">All products are ethically made and never tested on animals</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-star feature-icon"></i>
+                        <h3 class="feature-title">Expert Solutions</h3>
+                        <p class="feature-text">Targeted solutions for all your skincare and haircare concerns</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="floating-images">
+            <div class="floating-image">
+                <img src="https://images.unsplash.com/photo-1576426863848-c21f53c60b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                     alt="Natural Beauty Product">
+            </div>
+            <div class="floating-image">
+                <img src="https://images.unsplash.com/photo-1570194065650-d99fb4b8ccb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                     alt="Skincare Product">
+            </div>
+            <div class="floating-image">
+                <img src="https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                     alt="Beauty Product">
+            </div>
+            <div class="floating-image">
+                <img src="https://images.unsplash.com/photo-1573461160327-b450ce3d8e7f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                     alt="Natural Ingredients">
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

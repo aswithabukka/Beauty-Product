@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Beauty Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c2c2c;
+            --secondary-color: #4a4a4a;
+            --accent-color: #8a8a8a;
+            --background-color: #f8f9fa;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--primary-color);
+        }
+
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--primary-color) !important;
+        }
+
+        .product-card {
+            background: white;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 2rem;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            position: relative;
+            padding-top: 100%;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-icons {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-button {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: none;
+            color: var(--primary-color);
+        }
+
+        .icon-button:hover {
+            transform: scale(1.1);
+        }
+
+        .product-details {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-category {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .filters-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
+
+        .rating {
+            color: #ffd700;
+            font-size: 0.9rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .filters-section {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-spa me-2"></i>Beauty Shop</a>
+            <div class="d-flex align-items-center">
+                <a href="/cart" class="position-relative me-3">
+                    <i class="fas fa-shopping-cart fa-lg"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <div class="row">
+            <!-- Filters -->
+            <div class="col-lg-3">
+                <div class="filters-section">
+                    <h5 class="filter-title">Filters</h5>
+                    <form id="filterForm">
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select name="category" class="form-select">
+                                <option value="">All Categories</option>
+                                {% for category in categories %}
+                                <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>
+                                    {{ category|title }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Price Range</label>
+                            <div class="d-flex gap-2">
+                                <input type="number" name="min_price" class="form-control" placeholder="Min" 
+                                       value="{{ selected_min_price }}" min="{{ price_range.min }}" max="{{ price_range.max }}" step="0.01">
+                                <input type="number" name="max_price" class="form-control" placeholder="Max"
+                                       value="{{ selected_max_price }}" min="{{ price_range.min }}" max="{{ price_range.max }}" step="0.01">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Minimum Rating</label>
+                            <select name="min_rating" class="form-select">
+                                <option value="">Any Rating</option>
+                                <option value="4" {% if selected_rating == '4' %}selected{% endif %}>4+ ★</option>
+                                <option value="3" {% if selected_rating == '3' %}selected{% endif %}>3+ ★</option>
+                                <option value="2" {% if selected_rating == '2' %}selected{% endif %}>2+ ★</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 mb-2">Apply Filters</button>
+                        {% if selected_category or selected_min_price or selected_max_price or selected_rating %}
+                        <a href="/products" class="btn btn-outline-secondary w-100">Clear Filters</a>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="col-lg-9">
+                <div class="row">
+                    {% if products %}
+                        {% for product in products %}
+                        <div class="col-md-4">
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                                    <div class="product-icons">
+                                        <button class="icon-button add-to-cart" onclick="addToCart('{{ product.id }}')">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-details">
+                                    <h3 class="product-title">{{ product.name }}</h3>
+                                    <div class="product-category">{{ product.category }}</div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="product-price">
+                                            {% if product.discount > 0 %}
+                                            <span class="text-muted text-decoration-line-through me-2">${{ "%.2f"|format(product.price) }}</span>
+                                            <span>${{ "%.2f"|format(product.price * (1 - product.discount/100)) }}</span>
+                                            {% else %}
+                                            <span>${{ "%.2f"|format(product.price) }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="rating">
+                                            {% for _ in range(product.rating|int) %}
+                                            <i class="fas fa-star"></i>
+                                            {% endfor %}
+                                            {% if (product.rating - product.rating|int) >= 0.5 %}
+                                            <i class="fas fa-star-half-alt"></i>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-search fa-3x mb-3"></i>
+                            <h3>No products found</h3>
+                            <p>Try adjusting your filters or browse all products</p>
+                            <a href="/products" class="btn btn-dark">View All Products</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-submit form when rating or category changes
+        document.querySelectorAll('select[name="min_rating"], select[name="category"]').forEach(select => {
+            select.addEventListener('change', () => {
+                document.getElementById('filterForm').submit();
+            });
+        });
+
+        // Add to cart functionality
+        function addToCart(productId) {
+            fetch('/add_to_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ product_id: productId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('cartCount').textContent = data.cart_count;
+                    // Optional: Show a success message
+                    alert('Product added to cart!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

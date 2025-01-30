@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Solution - BeautyShop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c2c2c;
+            --secondary-color: #4a4a4a;
+            --accent-color: #8a8a8a;
+            --background-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+        }
+
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--primary-color) !important;
+        }
+
+        .concerns-header {
+            background: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .concerns-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .concerns-subtitle {
+            color: var(--secondary-color);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .concern-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 2rem;
+            cursor: pointer;
+        }
+
+        .concern-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .concern-image-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .concern-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .concern-content {
+            padding: 1.5rem;
+        }
+
+        .concern-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .concern-description {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .recommended-products {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 1rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .product-details {
+            padding-left: 1rem;
+        }
+
+        .product-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-price {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .active-concern {
+            background: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-spa me-2"></i>BeautyShop</a>
+            <div class="d-flex gap-3">
+                <a href="/products" class="btn btn-dark">Shop All Products</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="concerns-header">
+        <div class="container">
+            <h1 class="concerns-title">Find Your Perfect Solution</h1>
+            <p class="concerns-subtitle">
+                Tell us about your concerns and we'll recommend the perfect products for your needs.
+                Our expert-curated solutions target specific skin and hair concerns for optimal results.
+            </p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+                    {% for concern in concerns %}
+                    <div class="col-md-6">
+                        <div class="concern-card" onclick="showRecommendations('{{ concern.id }}')">
+                            <div class="concern-image-container">
+                                <img src="{{ concern.image }}" alt="{{ concern.name }}" class="concern-image"
+                                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60';">
+                            </div>
+                            <div class="concern-content">
+                                <h3 class="concern-title">{{ concern.name }}</h3>
+                                <p class="concern-description">{{ concern.description }}</p>
+                                <button class="btn btn-outline-dark btn-sm">View Solutions</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div id="recommendationsPanel" class="recommended-products">
+                    <h3 class="mb-4">Recommended Products</h3>
+                    <div id="recommendedProductsList">
+                        <!-- Products will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showRecommendations(concernId) {
+            // Remove active class from all cards
+            document.querySelectorAll('.concern-card').forEach(card => {
+                card.classList.remove('active-concern');
+            });
+            
+            // Add active class to clicked card
+            event.currentTarget.classList.add('active-concern');
+            
+            // Show recommendations panel
+            document.getElementById('recommendationsPanel').style.display = 'block';
+            
+            // Fetch recommendations
+            fetch(`/get_recommendations/${concernId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const productsList = document.getElementById('recommendedProductsList');
+                    productsList.innerHTML = data.products.map(product => `
+                        <div class="product-card d-flex align-items-center">
+                            <img src="${product.image_url}" alt="${product.name}" class="product-image">
+                            <div class="product-details">
+                                <h5 class="product-title">${product.name}</h5>
+                                <p class="mb-1">${product.short_description}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="product-price">$${product.price.toFixed(2)}</span>
+                                    <button class="btn btn-dark btn-sm" onclick="addToCart('${product.id}')">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                });
+        }
+
+        function addToCart(productId) {
+            fetch('/add_to_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ product_id: productId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Product added to cart!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
