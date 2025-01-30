@@ -46,3 +46,6 @@ A modern e-commerce platform specialized for beauty products, built with Flask a
 1. Clone the repository
 ```bash
 git clone https://github.com/aswithabukka/Beauty-Product.git
+```
+## Check the link here
+http://127.0.0.1:3001/
