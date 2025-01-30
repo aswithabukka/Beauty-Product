@@ -1,0 +1,34 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Hydrating Face Cream",
+            "description": "24-hour hydration for all skin types",
+            "price": 29.99,
+            "category": "skincare",
+            "rating": 4.5,
+            "discount": 10,
+            "image_url": "https://via.placeholder.com/200x200"
+        },
+        {
+            "id": 2,
+            "name": "Matte Lipstick",
+            "description": "Long-lasting matte finish",
+            "price": 19.99,
+            "category": "makeup",
+            "rating": 4.8,
+            "discount": 0,
+            "image_url": "https://via.placeholder.com/200x200"
+        },
+        {
+            "id": 3,
+            "name": "Repair Shampoo",
+            "description": "Deep repair for damaged hair",
+            "price": 24.99,
+            "category": "haircare",
+            "rating": 4.2,
+            "discount": 15,
+            "image_url": "https://via.placeholder.com/200x200"
+        }
+    ]
+}

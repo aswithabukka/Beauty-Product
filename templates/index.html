@@ -1,76 +1,143 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="row">
-    <!-- Filters Sidebar -->
-    <div class="col-md-3">
-        <div class="card">
-            <div class="card-header">
-                <h5>Filters</h5>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .product-card {
+            height: 100%;
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Beauty Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart">Cart</a>
+                    </li>
+                </ul>
             </div>
-            <div class="card-body">
-                <!-- Category Filter -->
-                <div class="mb-3">
-                    <h6>Category</h6>
-                    <div class="form-check">
-                        <input class="form-check-input category-filter" type="checkbox" value="skincare">
-                        <label class="form-check-label">Skincare</label>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Filters Sidebar -->
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Filters</h5>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input category-filter" type="checkbox" value="makeup">
-                        <label class="form-check-label">Makeup</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input category-filter" type="checkbox" value="haircare">
-                        <label class="form-check-label">Haircare</label>
+                    <div class="card-body">
+                        <form method="get" action="/">
+                            <!-- Category Filter -->
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <select name="category" class="form-select">
+                                    <option value="">All Categories</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>
+                                        {{ category|title }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Price Range -->
+                            <div class="mb-3">
+                                <label class="form-label">Price Range</label>
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="number" name="min_price" class="form-control" placeholder="Min" 
+                                               value="{{ selected_min_price }}" step="0.01">
+                                    </div>
+                                    <div class="col">
+                                        <input type="number" name="max_price" class="form-control" placeholder="Max"
+                                               value="{{ selected_max_price }}" step="0.01">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Rating Filter -->
+                            <div class="mb-3">
+                                <label class="form-label">Minimum Rating</label>
+                                <select name="min_rating" class="form-select">
+                                    <option value="">Any Rating</option>
+                                    <option value="4" {% if selected_rating == '4' %}selected{% endif %}>4+ Stars</option>
+                                    <option value="3" {% if selected_rating == '3' %}selected{% endif %}>3+ Stars</option>
+                                    <option value="2" {% if selected_rating == '2' %}selected{% endif %}>2+ Stars</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                            {% if selected_category or selected_min_price or selected_max_price or selected_rating %}
+                            <a href="/" class="btn btn-outline-secondary w-100 mt-2">Clear Filters</a>
+                            {% endif %}
+                        </form>
                     </div>
                 </div>
+            </div>
 
-                <!-- Price Range Filter -->
-                <div class="mb-3">
-                    <h6>Price Range</h6>
-                    <div class="price-slider">
-                        <input type="range" class="form-range" id="minPrice" min="0" max="200">
-                        <input type="range" class="form-range" id="maxPrice" min="0" max="200">
-                        <div class="price-range-display">
-                            $<span id="minPriceValue">0</span> - $<span id="maxPriceValue">200</span>
+            <!-- Products Grid -->
+            <div class="col-md-9">
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card product-card">
+                            {% if product.discount > 0 %}
+                            <div class="discount-badge">{{ product.discount }}% OFF</div>
+                            {% endif %}
+                            <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">{{ product.description }}</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="price">
+                                        {% if product.discount > 0 %}
+                                        <span class="text-muted text-decoration-line-through">${{ "%.2f"|format(product.price) }}</span>
+                                        <span class="text-danger">${{ "%.2f"|format(product.price * (1 - product.discount/100)) }}</span>
+                                        {% else %}
+                                        <span>${{ "%.2f"|format(product.price) }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="rating">
+                                        {% for _ in range(product.rating|int) %}★{% endfor %}
+                                        {% if (product.rating - product.rating|int) >= 0.5 %}½{% endif %}
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary w-100">Add to Cart</button>
+                            </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
-
-                <!-- Rating Filter -->
-                <div class="mb-3">
-                    <h6>Minimum Rating</h6>
-                    <select class="form-select" id="ratingFilter">
-                        <option value="">All Ratings</option>
-                        <option value="4">4+ Stars</option>
-                        <option value="3">3+ Stars</option>
-                        <option value="2">2+ Stars</option>
-                    </select>
-                </div>
-
-                <!-- Discount Filter -->
-                <div class="mb-3">
-                    <h6>Discount</h6>
-                    <select class="form-select" id="discountFilter">
-                        <option value="">All Items</option>
-                        <option value="10">10% or more</option>
-                        <option value="20">20% or more</option>
-                        <option value="30">30% or more</option>
-                        <option value="50">50% or more</option>
-                    </select>
-                </div>
-
-                <button class="btn btn-primary w-100" id="applyFilters">Apply Filters</button>
             </div>
         </div>
     </div>
 
-    <!-- Products Grid -->
-    <div class="col-md-9">
-        <div class="row" id="productsContainer">
-            <!-- Products will be dynamically loaded here -->
-        </div>
-    </div>
-</div>
-{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

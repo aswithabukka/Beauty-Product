@@ -1,29 +1,14 @@
-version: '3.8'
+version: '3'
 
 services:
   web:
     build: .
     ports:
-      - "5000:5000"
-    volumes:
-      - .:/app
+      - "4000:4000"
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=development
-    depends_on:
-      - db
-
-  db:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: beauty_ecommerce
-      MYSQL_USER: beauty_user
-      MYSQL_PASSWORD: beauty_password
-    ports:
-      - "3306:3306"
+      - SQLALCHEMY_DATABASE_URI=sqlite:///beauty_shop.db
     volumes:
-      - mysql_data:/var/lib/mysql
-
-volumes:
-  mysql_data:
+      - .:/app
+    restart: always
